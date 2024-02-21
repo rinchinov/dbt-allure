@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "dbt-allure"
+version = "0.0.1-beta-1"
+description = ""
+authors = ["Roman <roman1001001@gmail.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+packages = [
+    { include = "dbt_allure" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+dbt-core = ">=1.5"
+pyyaml = "^6.0.1"
+jsonschema = "^4.21.1"
+
+[tool.poetry.group.dev.dependencies]
+auto-changelog = "^0.6.0"
+coverage = "^7.4.2"
+mypy = "^1.8.0"
+pre-commit = "^3.6.2"
+pytest = "^8.0.1"
+pytest-cov = "^4.1.0"
+radon = "^6.0.1"
+ruff = "^0.2.2"
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+toml-cli = "^0.6.0"
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle Error
+    "F", # pyflakes
+    "C90", # mccabe
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "FBT", # flake8-boolean-trap
+    "C4", # flake8-comprehensions
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "PTH", # flake8-use-pathlib
+    "PERF", # perflint
+    "FURB", # refurb
+    "RUF", # ruff specific
+
+]
+ignore = ["E501", "E731"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
