@@ -35,6 +35,21 @@ files = [
 ]
 
 [[package]]
+name = "allure-python-commons"
+version = "2.13.2"
+description = "Common module for integrate allure with python-based frameworks"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "allure-python-commons-2.13.2.tar.gz", hash = "sha256:8a03681330231b1deadd86b97ff68841c6591320114ae638570f1ed60d7a2033"},
+    {file = "allure_python_commons-2.13.2-py3-none-any.whl", hash = "sha256:2bb3646ec3fbf5b36d178a5e735002bc130ae9f9ba80f080af97d368ba375051"},
+]
+
+[package.dependencies]
+attrs = ">=16.0.0"
+pluggy = ">=0.4.0"
+
+[[package]]
 name = "annotated-types"
 version = "0.6.0"
 description = "Reusable constraint types to use with typing.Annotated"
@@ -2059,4 +2074,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9"
-content-hash = "92bd2aacbd83e868f597b1f8446aac8ee3160c5cbb7baeff610ac5f58bcf66c5"
+content-hash = "a7464267dad404dd34b69e88ae7fa6e3bb776bd0f5bb38debbf72914f6875015"

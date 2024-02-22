@@ -1,15 +1,14 @@
-import json
-import traceback
-import uuid
 import os
-from dbt.cli.main import EventMsg
+import uuid
 from datetime import datetime, timezone
-from dbt_allure.data import TestCase, Link, Label, Step
-from dbt_allure import configuration
-import logging
 
+from allure_commons.model2 import (  # type: ignore
+    Label,
+    Link,
+    TestResult,
+    TestStepResult,
+)
 
-ALLURE_CONFIGS = configuration.get_configurations()
 LINKS = (
     "tsm",
     "issue"
@@ -25,12 +24,12 @@ LABELS = (
     "subSuite",
     "package"
 )
-META_MAPPING = dict(
-    title_key=os.environ.get("DBT_ALLURE_TITLE_KEY", "allure_title"),
-    description_key=os.environ.get("DBT_ALLURE_TITLE_KEY", "allure_description"),
-    owner_key=os.environ.get("DBT_ALLURE_OWNER_KEY", "allure_owners"),
-    owner_default=os.environ.get("DBT_ALLURE_OWNER_DEFAULT", "Nobody"),
-)
+META_MAPPING = {
+    "title_key": os.environ.get("DBT_ALLURE_TITLE_KEY", "allure_title"),
+    "description_key": os.environ.get("DBT_ALLURE_TITLE_KEY", "allure_description"),
+    "owner_key": os.environ.get("DBT_ALLURE_OWNER_KEY", "allure_owners"),
+    "owner_default": os.environ.get("DBT_ALLURE_OWNER_DEFAULT", "Nobody"),
+}
 
 
 def to_milliseconds(seconds: int, nanos: int) -> int:
@@ -41,8 +40,7 @@ def get_from_meta(meta, key, default):
     value = meta.get(key)
     if value:
         return value.string_value or value.number_value
-    else:
-        return default
+    return default
 
 
 def get_label_from_meta(meta, label_name):
@@ -51,6 +49,7 @@ def get_label_from_meta(meta, label_name):
     _value = get_from_meta(meta, _key, _default)
     if _value:
         return Label(name=label_name, value=_value)
+    return None
 
 
 def get_link_from_meta(meta, link_name):
@@ -64,14 +63,14 @@ def get_link_from_meta(meta, link_name):
             name=link_name,
             url=_link_template.format(_value)
         )
+    return None
 
 
 def node_status(test_result):
     status = test_result.data.run_result.status
     if status == "pass":
         return "passed"
-    else:
-        return "failed"
+    return "failed"
 
 
 def get_title(test_result):
@@ -131,13 +130,13 @@ def get_steps(test_result):
     stop = datetime.fromisoformat(test_result.data.node_info.node_finished_at).replace(
         tzinfo=timezone.utc).timestamp() * 1000
     return [
-        Step(
+        TestStepResult(
             name=test_result.data.run_result.message,
             status=status,
             start=int(start),
             stop=int(stop),
         ),
-        Step(
+        TestStepResult(
             name=test_result.info.msg,
             status=status,
             start=int(start),
@@ -146,7 +145,7 @@ def get_steps(test_result):
     ]
 
 
-def convert_test_result_to_allure_test_case(test_result) -> TestCase:
+def convert_test_result_to_allure_test_case(test_result) -> TestResult:
     start = datetime.fromisoformat(test_result.data.node_info.node_started_at).replace(
         tzinfo=timezone.utc).timestamp() * 1000
     stop = datetime.fromisoformat(test_result.data.node_info.node_finished_at).replace(
@@ -156,7 +155,7 @@ def convert_test_result_to_allure_test_case(test_result) -> TestCase:
     labels = get_labels(test_result)
     steps = get_steps(test_result)
     title = get_title(test_result)
-    return TestCase(
+    return TestResult(
         uuid=str(uuid.uuid4()),
         historyId=test_result.data.node_info.unique_id,
         testCaseId=test_result.data.node_info.unique_id,
@@ -169,20 +168,3 @@ def convert_test_result_to_allure_test_case(test_result) -> TestCase:
         stop=int(stop),
         steps=steps
     )
-
-
-def allure_callback(event: EventMsg) -> None:
-    if event.info.name == "NodeFinished" \
-            and event.data.node_info.resource_type == "test":
-        try:
-            test_case = convert_test_result_to_allure_test_case(event)
-        except Exception as e:
-            logging.error(f"allure test result parsing error {e}: traceback: {traceback.format_exc()}")
-            return
-        try:
-            path = f"target/allure-results/"
-            os.makedirs(path, exist_ok=True)
-            with open(f"{path}/{test_case.uuid}-result.json", "w+") as f:
-                json.dump(test_case.to_dict(), f)
-        except Exception as e:
-            logging.error(f"allure test result saving error {e}: traceback: {traceback.format_exc()}")

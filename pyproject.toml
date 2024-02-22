@@ -14,6 +14,7 @@ python = ">=3.9"
 dbt-core = ">=1.5"
 pyyaml = "^6.0.1"
 jsonschema = "^4.21.1"
+allure-python-commons = "^2.13.2"
 
 [tool.poetry.group.dev.dependencies]
 auto-changelog = "^0.6.0"
