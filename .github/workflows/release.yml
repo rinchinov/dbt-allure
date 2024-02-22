@@ -2,11 +2,12 @@ name: Publish Python package to PyPI
 
 on:
   release:
-    types: [created]
-
+    types: [created, released]
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,6 +28,17 @@ jobs:
 
       - name: Install dependencies
         run: poetry install
+
+      - name: Build Package
+        run: |
+          poetry build
+
+
+      # Upload artifact as a release asset
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} ./dist/*
 
       - name: Build and publish to PyPI
         env:
