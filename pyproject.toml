@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dbt-allure"
 version = "0.0.1-beta-1"
-description = ""
+description = "dbt-allure: Elevate dbt testing with intuitive Allure reports, streamlining data validation and transformation projects."
 authors = ["Roman <roman1001001@gmail.com>"]
 license = "GPL-3.0-only"
 readme = "README.md"
