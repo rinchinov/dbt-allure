@@ -1,0 +1,35 @@
+name: Publish Python package to PyPI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract python version
+        id: python-version
+        run: |
+          python_version=$(grep '^python =' pyproject.toml | awk -F'"' '{print $2}')
+          echo "python-version=$python_version" >> $GITHUB_OUTPUT
+
+      - name: Set up python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ steps.python-version.outputs.python-version }}
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+      - name: Build and publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+          poetry publish --build
