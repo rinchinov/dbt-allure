@@ -1,21 +1,17 @@
-## 1.0.0 (2024-02-16)
+# Changelog
 
-#### Packages
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-- `auto-changelog`
-- `coverage`
-- `mypy`
-- `pre-commit`
-- `pytest`
-- `pytest-cov`
-- `radon`
-- `ruff`
-- `sphinx`
-- `sphinx-rtd-theme`
-- `toml-cli`
+## [Unreleased]
 
-#### Configuration
+- Initial setup and planning.
 
-- `dependabot`
-- `ci` with `pytest`, `ruff`, `mypy`
-- `pre-commit` with `ruff format`
+## [0.0.1-beta-1] - 2024-02-22
+
+### Added
+
+- Implemented dbt-allure plugin for integrating dbt tests with Allure reporting.
+- Added installation instructions for pip, poetry, and git methods.
+- Provided detailed usage documentation for both programmatic invocations and CLI wrapper usage.
+- Included configuration options for customizing the results directory and cleanup behavior.
+- Setup GitHub Actions for automatic testing and release artifact generation.
