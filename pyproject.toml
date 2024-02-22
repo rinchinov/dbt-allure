@@ -28,6 +28,7 @@ ruff = "^0.2.2"
 sphinx = "^7.2.6"
 sphinx-rtd-theme = "^2.0.0"
 toml-cli = "^0.6.0"
+types-jsonschema = "^4.21.0.20240118"
 
 [tool.ruff.lint]
 select = [
