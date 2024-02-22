@@ -2,7 +2,7 @@ name: Publish Python package to PyPI
 
 on:
   release:
-    types: [created, released]
+    types: [released]
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
