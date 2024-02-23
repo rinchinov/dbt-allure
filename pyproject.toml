@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dbt-allure"
-version = "0.0.1-beta-1"
+version = "0.0.1-beta-2"
 description = "dbt-allure: Elevate dbt testing with intuitive Allure reports, streamlining data validation and transformation projects."
 authors = ["Roman <roman1001001@gmail.com>"]
 license = "GPL-3.0-only"
@@ -30,6 +30,7 @@ sphinx-rtd-theme = "^2.0.0"
 toml-cli = "^0.6.0"
 types-jsonschema = "^4.21.0.20240118"
 types-pyyaml = "^6.0.12.12"
+twine = "^5.0.0"
 
 [tool.ruff.lint]
 select = [
