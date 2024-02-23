@@ -140,4 +140,4 @@ def get_node_timings(node_info):
         tzinfo=timezone.utc).timestamp() * 1000
     stop = datetime.fromisoformat(node_info.node_finished_at).replace(
         tzinfo=timezone.utc).timestamp() * 1000
-    return dict(start=int(start), stop=int(stop))
+    return {"start": int(start), "stop": int(stop)}
