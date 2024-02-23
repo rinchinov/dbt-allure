@@ -29,15 +29,15 @@ The dbt-allure plugin can be utilized through programmatic invocations in Python
 For more detailed information on programmatic invocation with dbt, refer to the [dbt documentation on running dbt programmatically](https://docs.getdbt.com/docs/running-a-dbt-project/running-dbt-in-python).
 
 ```python
-from dbt_allure import allure_callback
+from dbt_allure import DBTAllure
 from dbt.cli.main import dbtRunner
 
 dbt = dbtRunner(
-  callbacks=[
-    allure_callback,
-  ]
+    callbacks=[
+        DBTAllure.callback,
+    ]
 )
-dbt.invoke("test")
+dbt.invoke(["test"])
 ```
 
 **CLI Wrapper (Bash):**

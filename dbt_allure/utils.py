@@ -1,11 +1,9 @@
 import os
-import uuid
 from datetime import datetime, timezone
 
 from allure_commons.model2 import (  # type: ignore
     Label,
     Link,
-    TestResult,
     TestStepResult,
 )
 
@@ -66,16 +64,16 @@ def get_link_from_meta(meta, link_name):
     return None
 
 
-def node_status(test_result):
+def get_node_status(test_result):
     status = test_result.data.run_result.status
     if status == "pass":
         return "passed"
     return "failed"
 
 
-def get_title(test_result):
-    meta = test_result.data.node_info.meta.fields
-    return get_from_meta(meta, META_MAPPING["title_key"], test_result.data.node_info.node_name)
+def get_title(node_info):
+    meta = node_info.meta.fields
+    return get_from_meta(meta, META_MAPPING["title_key"], node_info.node_name)
 
 
 def get_adapter_response(test_result):
@@ -105,66 +103,41 @@ def get_links(test_result):
     return []
 
 
-def get_labels(test_result):
-    """
-    for label in LABELS:
-        label = get_label_from_meta(meta, label)
-        if label:
-            labels.append(label)
-    """
+def get_labels(info):
     return [
         Label(name="framework", value="dbt"),
         Label(name="language", value="SQL"),
-        Label(name="resource_type", value=test_result.data.node_info.resource_type),
-        Label(name="node_status", value=test_result.data.node_info.node_status),
-        Label(name="invocation_id", value=test_result.info.invocation_id),
-        Label(name="pid", value=test_result.info.pid),
-        Label(name="thread", value=test_result.info.thread),
+        Label(name="invocation_id", value=info.invocation_id),
+        Label(name="pid", value=info.pid),
+        Label(name="thread", value=info.thread),
     ]
 
 
 def get_steps(test_result):
-    status = node_status(test_result)
-    start = datetime.fromisoformat(test_result.data.node_info.node_started_at).replace(
-        tzinfo=timezone.utc).timestamp() * 1000
-    stop = datetime.fromisoformat(test_result.data.node_info.node_finished_at).replace(
-        tzinfo=timezone.utc).timestamp() * 1000
-    return [
-        TestStepResult(
-            name=test_result.data.run_result.message,
-            status=status,
-            start=int(start),
-            stop=int(stop),
-        ),
+    status = get_node_status(test_result)
+    timings = get_node_timings(test_result.data.node_info)
+    steps = [
         TestStepResult(
             name=test_result.info.msg,
             status=status,
-            start=int(start),
-            stop=int(stop),
+            **timings
         ),
     ]
+    if test_result.data.run_result.message:
+        steps.append(
+            TestStepResult(
+                name=test_result.data.run_result.message,
+                status=status,
+                **timings
+            )
+        )
+    return steps
 
 
-def convert_test_result_to_allure_test_case(test_result) -> TestResult:
-    start = datetime.fromisoformat(test_result.data.node_info.node_started_at).replace(
+def get_node_timings(node_info):
+    """"""
+    start = datetime.fromisoformat(node_info.node_started_at).replace(
         tzinfo=timezone.utc).timestamp() * 1000
-    stop = datetime.fromisoformat(test_result.data.node_info.node_finished_at).replace(
+    stop = datetime.fromisoformat(node_info.node_finished_at).replace(
         tzinfo=timezone.utc).timestamp() * 1000
-    status = node_status(test_result)
-    links = get_links(test_result)
-    labels = get_labels(test_result)
-    steps = get_steps(test_result)
-    title = get_title(test_result)
-    return TestResult(
-        uuid=str(uuid.uuid4()),
-        historyId=test_result.data.node_info.unique_id,
-        testCaseId=test_result.data.node_info.unique_id,
-        fullName=test_result.data.node_info.node_name,
-        name=title,
-        links=links,
-        labels=labels,
-        status=status,
-        start=int(start),
-        stop=int(stop),
-        steps=steps
-    )
+    return dict(start=int(start), stop=int(stop))
