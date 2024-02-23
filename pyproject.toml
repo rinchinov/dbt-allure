@@ -30,7 +30,6 @@ sphinx-rtd-theme = "^2.0.0"
 toml-cli = "^0.6.0"
 types-jsonschema = "^4.21.0.20240118"
 types-pyyaml = "^6.0.12.12"
-twine = "^5.0.0"
 
 [tool.ruff.lint]
 select = [
