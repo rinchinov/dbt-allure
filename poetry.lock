@@ -389,13 +389,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "dbt-core"
-version = "1.7.10"
+version = "1.7.11"
 description = "With dbt, data analysts and engineers can build analytics the way engineers build applications."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dbt-core-1.7.10.tar.gz", hash = "sha256:635aac5d8753e7a96c731c1b76019e6903934b4858ab0dcb652f9b889e13f658"},
-    {file = "dbt_core-1.7.10-py3-none-any.whl", hash = "sha256:264c5f324800c99784480b827495cc0df157c317ff9be1ea2ef9e999025c609e"},
+    {file = "dbt-core-1.7.11.tar.gz", hash = "sha256:c2dc28251a7b08c13a298ca19aefd3b796357ba9d894b59ef5b47eb26871be06"},
+    {file = "dbt_core-1.7.11-py3-none-any.whl", hash = "sha256:beae61d7735edf4baf9fe56a3fc04428eafb214b143bf86b9749f5ffdfe13565"},
 ]
 
 [package.dependencies]
