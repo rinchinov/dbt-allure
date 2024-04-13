@@ -1945,13 +1945,13 @@ files = [
 
 [[package]]
 name = "toml-cli"
-version = "0.6.0"
+version = "0.6.1"
 description = "Command line interface to read and write keys/values to/from toml files"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toml_cli-0.6.0-py3-none-any.whl", hash = "sha256:081911c15ad4cdbf6d4b6f5069c6dd7ff62af8a6c6c904308737f7110b2383f1"},
-    {file = "toml_cli-0.6.0.tar.gz", hash = "sha256:76fac0568f105a9ca3a99b78b21e9a7835cf1be100bc6ab6a2ca77787926bc5d"},
+    {file = "toml_cli-0.6.1-py3-none-any.whl", hash = "sha256:1aeba7a0aa21ee818051fc40211a79c0ce3041c3ebd96705110d782725120d71"},
+    {file = "toml_cli-0.6.1.tar.gz", hash = "sha256:7a7fb28f90c04519191752dacfbf823ab129edd658bd182bac2487d82d7917ed"},
 ]
 
 [package.dependencies]
